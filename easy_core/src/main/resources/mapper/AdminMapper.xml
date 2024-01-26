@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qcby.dao.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.qcby.model.Admin">
+    <id column="AID" jdbcType="INTEGER" property="aid" />
+    <result column="Username" jdbcType="VARCHAR" property="username" />
+    <result column="Password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    AID, Username, Password
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where AID = #{aid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where AID = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qcby.model.Admin">
+    insert into admin (AID, Username, Password
+      )
+    values (#{aid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qcby.model.Admin">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        AID,
+      </if>
+      <if test="username != null">
+        Username,
+      </if>
+      <if test="password != null">
+        Password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qcby.model.Admin">
+    update admin
+    <set>
+      <if test="username != null">
+        Username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        Password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AID = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qcby.model.Admin">
+    update admin
+    set Username = #{username,jdbcType=VARCHAR},
+      Password = #{password,jdbcType=VARCHAR}
+    where AID = #{aid,jdbcType=INTEGER}
+  </update>
+
+  <!--用于用户登录查询-->
+  <select id="login"  parameterType="com.qcby.model.Admin" resultType="int">
+    select *
+    from admin
+    where Username = #{username}
+    and Password = #{password}
+  </select>
+
+  <!--返回用户id-->
+  <select id="selectId" parameterType="com.qcby.model.Admin" resultType="int">
+    select aid
+    from admin
+    where Username = #{username}
+    and Password = #{password}
+  </select>
+</mapper>

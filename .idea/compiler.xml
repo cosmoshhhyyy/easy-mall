@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="easy_core" />
+        <module name="easy_front" />
+        <module name="manager_console" />
+        <module name="merch_console" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="admi_console" target="1.8" />
+      <module name="easy_core" target="1.8" />
+      <module name="easy_front" target="1.8" />
+      <module name="easy_portal" target="1.8" />
+      <module name="EasyMart" target="1.8" />
+      <module name="manager_console" target="1.8" />
+      <module name="merch_console" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

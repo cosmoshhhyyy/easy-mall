@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EasyMart.iml" filepath="$PROJECT_DIR$/EasyMart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easy_core/easy_core.iml" filepath="$PROJECT_DIR$/easy_core/easy_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easy_front/easy_front.iml" filepath="$PROJECT_DIR$/easy_front/easy_front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager_console/manager_console.iml" filepath="$PROJECT_DIR$/manager_console/manager_console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/merch_console/merch_console.iml" filepath="$PROJECT_DIR$/merch_console/merch_console.iml" />
+    </modules>
+  </component>
+</project>

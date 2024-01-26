@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="easy_front:war">
+    <output-path>$PROJECT_DIR$/easy_front/target</output-path>
+    <root id="archive" name="easy_front-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="easy_front:war exploded" />
+    </root>
+  </artifact>
+</component>

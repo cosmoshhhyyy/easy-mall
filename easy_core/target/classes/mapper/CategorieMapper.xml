@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qcby.dao.CategorieMapper">
+  <resultMap id="BaseResultMap" type="com.qcby.model.Categorie">
+    <id column="CID" jdbcType="INTEGER" property="cid" />
+    <result column="CName" jdbcType="VARCHAR" property="cname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CID, CName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from categorie
+    where CID = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from categorie
+    where CID = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qcby.model.Categorie">
+    insert into categorie (CID, CName)
+    values (#{cid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qcby.model.Categorie">
+    insert into categorie
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        CID,
+      </if>
+      <if test="cname != null">
+        CName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qcby.model.Categorie">
+    update categorie
+    <set>
+      <if test="cname != null">
+        CName = #{cname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CID = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qcby.model.Categorie">
+    update categorie
+    set CName = #{cname,jdbcType=VARCHAR}
+    where CID = #{cid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultType="com.qcby.model.Categorie">
+    select * from categorie
+  </select>
+
+  <select id="selectPage" parameterType="com.qcby.query.CategorieQuery" resultMap="BaseResultMap">
+    SELECT * FROM categorie
+    <where>
+      <if test=" cname != null and cname != ''">
+        cname like '%${cname}%'
+      </if>
+    </where>
+    LIMIT #{startNum},#{pageSize}
+  </select>
+  <select id="selectCount" parameterType="com.qcby.query.CategorieQuery" resultType="int">
+    SELECT count(*) FROM categorie
+    <where>
+      <if test=" cname != null and cname != ''">
+        cname like '%${cname}%'
+      </if>
+    </where>
+  </select>
+
+  <!--验证名称是否存在-->
+  <select id="selectCategorieByName" parameterType="java.util.Map" resultType="com.qcby.model.Categorie">
+    select * from categorie c where c.cname=#{cname}
+  </select>
+</mapper>

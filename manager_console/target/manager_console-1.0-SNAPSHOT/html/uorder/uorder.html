@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../sources/layui/css/layui.css" media="all">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../../sources/js/jquery.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black">易购商城</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item"><a href="">个人信息</a></li>
+                <li class="layui-nav-item"><a href="/user/list">用户管理</a></li>
+                <li class="layui-nav-item"><a href="/categorie/list">类别管理</a></li>
+                <li class="layui-nav-item"><a href="/product/list">商品管理</a></li>
+                <li class="layui-nav-item"><a href="">订单管理</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <div class="layui-card layui-panel">
+                <div class="layui-card-body">
+                    <div class="layuimini-container">
+                        <div class="layuimini-main">
+                            <fieldset class="table-search-fieldset" style="border:1px solid #EBEBEB;">
+                                <div style="margin: 10px 10px 10px 10px" id="btn">
+                                    <form class="layui-form layui-form-pane" action="">
+                                        <div class="layui-form-item">
+                                            <h1>订单管理</h1>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">商品名称</label>
+                                                <div class="layui-input-inline">
+                                                    <input class="layui-input" name="keyword" id="commodity" placeholder="请输入商品名称" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">商家</label>
+                                                <div class="layui-input-inline">
+                                                    <input class="layui-input" name="keyword" id="business" placeholder="请输入商家名称" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">购买用户</label>
+                                                <div class="layui-input-inline">
+                                                    <input class="layui-input" name="keyword" id="consumer" placeholder="请输入用户名称" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label">数量</label>
+                                                    <div class="layui-input-inline" style="width: 100px;">
+                                                        <label>
+                                                            <input type="text" name="num_min" placeholder="最少" autocomplete="off"
+                                                                   class="layui-input">
+                                                        </label>
+                                                    </div>
+                                                    <div class="layui-form-mid">-</div>
+                                                    <div class="layui-input-inline" style="width: 100px;">
+                                                        <label>
+                                                            <input type="text" name="num_max" placeholder="最多" autocomplete="off"
+                                                                   class="layui-input">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label">下单日期</label>
+                                                    <div class="layui-input-inline">
+                                                        <label for="ID-laydate-demo"></label><input type="text" class="layui-input" id="ID-laydate-demo" placeholder="最早时间">
+                                                    </div>
+                                                    <div class="layui-form-mid">-</div>
+                                                    <div class="layui-input-inline">
+                                                        <label for="ID-laydate-demo1"></label><input type="text" class="layui-input" id="ID-laydate-demo1" placeholder="最晚时间">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline" style="width: 250px">
+                                                    <label class="layui-form-label">订单状态</label>
+                                                    <div class="layui-input-block">
+                                                        <label>
+                                                            <select name="statu" lay-verify="required">
+                                                                <option value=""></option>
+                                                                <option value="0">处理中</option>
+                                                                <option value="1">已发货</option>
+                                                                <option value="2">已完成</option>
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <button type="button" class="layui-btn layui-btn-primary" data-type="reload"
+                                                        id="search_btn"
+                                                        lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                                                </button>
+                                            </div>
+                                            <div class="layui-inline" style="float:right;">
+                                                <button type="button" class="layui-btn layui-btn-primary" data-type="reload"
+                                                        onclick="insertCourse()"><i class="layui-icon layui-icon-add-1"></i> 添 加
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </fieldset>
+                            <!--注意此处table标签里的id-->
+                            <table class="layui-table layui-hide" id="test" lay-filter="test"></table>
+                            <script type="text/html" id="buttonTpl">
+                                {{#  if(d.statu == 0){ }}
+                                <button class="layui-btn layui-btn-primary layui-btn-xs">处理中</button>
+                                {{#  } else if(d.statu == 1) { }}
+                                <button class="layui-btn  layui-btn-normal layui-btn-xs">已发货</button>
+                                {{#  } else { }}
+                                <button class="layui-btn layui-btn-xs">已完成</button>
+                                {{#  } }}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        欢迎来到易购商城管理员后台
+    </div>
+</div>
+
+<script src="../../sources/layui/layui.js" charset="utf-8"></script>
+
+<script type="text/html" id="barDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</button>
+    </div>
+</script>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#ID-laydate-demo' //指定元素
+        });
+        laydate.render({
+            elem: '#ID-laydate-demo1' //指定元素
+        });
+    });
+    layui.use('table', function () {
+        const table = layui.table;
+        const $ = layui.jquery;
+
+        table.render({
+            elem: '#test'
+            , url: '/uorder/findByCondition'
+            , method: 'get'
+            , parseData: function (res) {
+                let current_pages;
+                //第一次显示的时候this.page=true，把这种情况单独列出
+                if (this.page === true) {
+                    current_pages = 1;
+                } else {
+                    current_pages = this.page.curr;
+                }
+                //根据分页要求选出需要显示的数据
+                res.data = res.data.slice(this.limit * (current_pages - 1), this.limit * current_pages);
+            }
+            , page: true
+            , id: 'test'
+            , cols: [[
+                {field: 'oid', width: 80, title: 'ID', sort: true, align: 'center'}
+                , {field: 'pname', width: 170, title: '商品名称', align: 'center'}
+                , {field: 'mname', width: 120, title: '商家', align: 'center'}
+                , {field: 'username', width: 120, title: '购买用户', align: 'center'}
+                , {field: 'num', width: 120, title: '商品数量', sort: true, align: 'center'}
+                , {field: 'total', width: 120, title: '总金额（￥）', sort: true, align: 'center'}
+                , {field: 'orderdate', width: 172, title: '下单时间', sort: true, align: 'center'}
+                , {field: 'statu', width: 150, title: '订单状态', templet: '#buttonTpl', align: 'center'}
+                , {fixed: 'right', width: 161, title: '操作', align: 'center', toolbar: '#barDemo'}
+            ]]
+        });
+        $(document).on('click', '#search_btn', function () {
+            //执行重载
+            table.reload('test', {
+                url: '/uorder/findByCondition',
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                where: {
+                    pname: $('#commodity').val(),
+                    mname: $('#business').val(),
+                    username: $('#consumer').val(),
+                    num_min: $('input[name="num_min"]').val(),
+                    num_max: $('input[name="num_max"]').val(),
+                    start: $('#ID-laydate-demo').val(),
+                    end: $('#ID-laydate-demo1').val(),
+                    statu: $('select[name="statu"]').val()
+                }
+            },"data");
+        });
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            const data = obj.data; //获得当前行数据
+            const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            if (layEvent === 'del') {
+                layer.confirm('确定删除吗？', function (index) {
+                    $.ajax({
+                        url: "/uorder/deleteByPrimaryKey",
+                        type: "post",
+                        data: {"oid": data.oid},
+                        success: function () {
+                            layer.msg("删除成功");
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            layer.msg(typeof (errorThrown));
+                        }
+                    });
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            }
+        });
+    });
+
+    function insertCourse() {
+        layer.open({
+            title: '新增订单',
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['70%', '70%'],
+            content: '/html/uorder/insert.html',
+            end: function () {
+                location.reload();
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

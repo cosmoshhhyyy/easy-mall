@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qcby.dao.UorderMapper">
+  <resultMap id="BaseResultMap" type="com.qcby.model.Uorder">
+    <id column="OID" jdbcType="INTEGER" property="oid"/>
+    <result column="UID" jdbcType="INTEGER" property="uid"/>
+    <result column="MID" jdbcType="INTEGER" property="mid"/>
+    <result column="CID" jdbcType="INTEGER" property="cid"/>
+    <result column="OrderDate" jdbcType="DATE" property="orderdate"/>
+    <result column="Num" jdbcType="INTEGER" property="num"/>
+    <result column="Statu" jdbcType="INTEGER" property="statu"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    OID
+    , UID, MID, CID, OrderDate, Num, Statu
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from uorder
+    where OID = #{oid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete
+    from uorder
+    where OID = #{oid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qcby.model.Uorder">
+    insert into uorder (UID, MID,
+    CID, OrderDate, Num, Statu)
+    values (#{uid}, #{mid}, #{cid}, #{orderdate}, #{num}, #{statu});
+  </insert>
+  <insert id="insertSelective" parameterType="com.qcby.model.Uorder">
+    insert into uorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="uid != null">
+        UID,
+      </if>
+      <if test="mid != null">
+        MID,
+      </if>
+      <if test="cid != null">
+        CID,
+      </if>
+      <if test="orderdate != null">
+        OrderDate,
+      </if>
+      <if test="num != null">
+        Num,
+      </if>
+      <if test="statu != null">
+        Statu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null">
+        #{orderdate,jdbcType=DATE},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="statu != null">
+        #{statu,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qcby.model.Uorder">
+    update uorder
+    <set>
+      <if test="uid != null">
+        UID = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        MID = #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null">
+        CID = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null">
+        OrderDate = #{orderdate,jdbcType=DATE},
+      </if>
+      <if test="num != null">
+        Num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="statu != null">
+        Statu = #{statu,jdbcType=INTEGER},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qcby.model.Uorder">
+    update uorder
+    set UID       = #{uid,jdbcType=INTEGER},
+    MID       = #{mid,jdbcType=INTEGER},
+    CID       = #{cid,jdbcType=INTEGER},
+    OrderDate = #{orderdate,jdbcType=DATE},
+    Num       = #{num,jdbcType=INTEGER},
+    Statu     = #{statu,jdbcType=INTEGER}
+    where OID = #{oid,jdbcType=INTEGER}
+  </update>
+
+  <!-- 条件查询-->
+  <select id="findByCondition" parameterType="com.qcby.query.UorderQuery" resultType="com.qcby.query.UorderQuery">
+    select
+    uorder.OID,
+    uorder.MID,
+    uorder.UID,
+    uorder.CID,
+    product.Pname,
+    user.Username,
+    uorder.Num,
+    product.Price * uorder.Num as total,
+    uorder.OrderDate,
+    uorder.Statu
+    from uorder
+    left join user on uorder.UID = user.UID
+    left join product on uorder.CID = product.PID
+    <where>
+      <if test="oid != null">
+        and uorder.OID = #{oid}
+      </if>
+      <if test="pname != null and pname != ''">
+        and product.Pname like '%${pname}%'
+      </if>
+      <if test="mname != null and mname != ''">
+        and user.Username like '%${mname}%'
+      </if>
+      <if test="username != null and username != ''">
+        and user.Username like '%${username}%'
+      </if>
+      <if test="num_min != null">
+        and uorder.Num &gt;= #{num_min}
+      </if>
+      <if test="num_max != null">
+        and uorder.Num &lt;= #{num_max}
+      </if>
+      <if test="start != null">
+        and uorder.OrderDate &gt;= #{start}
+      </if>
+      <if test="end != null">
+        and uorder.OrderDate &lt;= #{end}
+      </if>
+      <if test="statu != null">
+        and uorder.Statu = #{statu}
+      </if>
+    </where>
+  </select>
+
+  <!-- 查询商家-->
+  <select id="findSeller" parameterType="java.lang.Integer" resultType="String">
+    select Username
+    from user
+    where user.UID = #{mid}
+  </select>
+
+  <!-- 查询所有商品-->
+  <select id="findAllCommodity" resultType="com.qcby.model.Product">
+    select PID,
+    Pname
+    from product
+  </select>
+
+  <!-- 查询所有商家-->
+  <select id="findAllSeller" resultType="com.qcby.model.User">
+    select UID,
+    Username
+    from user
+    where user.type = 1
+  </select>
+
+  <!-- 查询所有用户-->
+  <select id="findAllUser" resultType="com.qcby.model.User">
+    select UID,
+    Username
+    from user
+    where user.type = 0
+  </select>
+</mapper>

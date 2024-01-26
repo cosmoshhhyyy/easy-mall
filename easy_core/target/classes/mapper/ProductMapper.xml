@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qcby.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.qcby.model.Product">
+    <id column="PID" jdbcType="INTEGER" property="pid" />
+    <result column="PName" jdbcType="VARCHAR" property="pname" />
+    <result column="PDesc" jdbcType="VARCHAR" property="pdesc" />
+    <result column="Price" jdbcType="DECIMAL" property="price" />
+    <result column="Stock" jdbcType="INTEGER" property="stock" />
+    <result column="Pic" jdbcType="VARCHAR" property="pic" />
+    <result column="CID" jdbcType="INTEGER" property="cid" />
+    <result column="MID" jdbcType="INTEGER" property="mid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PID, PName, PDesc, Price, Stock, Pic, CID, MID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where PID = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where PID = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qcby.model.Product">
+    insert into product (PID, PName, PDesc, 
+      Price, Stock, Pic, 
+      CID, MID)
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pdesc,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, 
+      #{cid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qcby.model.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="pname != null">
+        PName,
+      </if>
+      <if test="pdesc != null">
+        PDesc,
+      </if>
+      <if test="price != null">
+        Price,
+      </if>
+      <if test="stock != null">
+        Stock,
+      </if>
+      <if test="pic != null">
+        Pic,
+      </if>
+      <if test="cid != null">
+        CID,
+      </if>
+      <if test="mid != null">
+        MID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pdesc != null">
+        #{pdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qcby.model.Product">
+    update product
+    <set>
+      <if test="pname != null">
+        PName = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pdesc != null">
+        PDesc = #{pdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        Price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        Stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        Pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        CID = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        MID = #{mid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qcby.model.Product">
+    update product
+    set PName = #{pname,jdbcType=VARCHAR},
+      PDesc = #{pdesc,jdbcType=VARCHAR},
+      Price = #{price,jdbcType=DECIMAL},
+      Stock = #{stock,jdbcType=INTEGER},
+      Pic = #{pic,jdbcType=VARCHAR},
+      CID = #{cid,jdbcType=INTEGER},
+      MID = #{mid,jdbcType=INTEGER}
+    where PID = #{pid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectPage" parameterType="com.qcby.query.ProductQuery" resultType="com.qcby.model.Product">
+    select p.* FROM product p
+    <if test="mname != null and mname != ''">
+      inner JOIN (
+      SELECT *
+      FROM user u
+      WHERE u.Username LIKE '%${mname}%'
+      ) uu ON p.mid = uu.uid
+    </if>
+    <where>
+      <if test="pname != null and pname != ''">
+        p.PName like '%${pname}%'
+      </if>
+      <if test="cid != null">
+        and p.cid = #{cid}
+      </if>
+    </where>
+    limit #{startNum}, #{pageSize}
+  </select>
+
+  <select id="selectCount" parameterType="com.qcby.query.ProductQuery" resultType="int">
+    select count(*) FROM product p
+    <if test="mname != null and mname != ''">
+      inner JOIN (
+      SELECT *
+      FROM user u
+      WHERE u.Username LIKE '%${mname}%'
+      ) uu ON p.mid = uu.uid
+    </if>
+    <if test="cid != null">
+      LEFT JOIN categorie c ON p.cid = c.cID
+    </if>
+    <where>
+      <if test="pname != null and pname != ''">
+        p.PName like '%${pname}%'
+      </if>
+    </where>
+  </select>
+</mapper>

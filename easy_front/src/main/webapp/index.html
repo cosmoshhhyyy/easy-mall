@@ -1,0 +1,200 @@
+<html lang="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>购物系统</title>
+    <link rel="stylesheet" href="sourceslogin/css/mystyle.css"/>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="sourceslogin/js/jquery.js"></script>
+</head>
+<body class="body_bg">
+<div class="whole">
+    <div class="title">购物系统</div>
+    <form id="form1" action="" method="get" class="form_box">
+        <div class="select">
+            <input type="hidden" name="quest" id="quest" value="">
+            <label>
+                <input type="radio" name="gender" value="0"/>
+                用户
+            </label>
+            <label>
+                <input type="radio" name="gender" value="1"/>
+                商家
+            </label>
+            <label>
+                <input type="radio" name="gender" value="2"/>
+                管理员
+            </label>
+        </div>
+        <div class="input_tit">账号</div>
+        <div class="input_box">
+            <input class="input_self" type="text" name="username" id="username"/>
+        </div>
+        <div class='blank_30'></div>
+        <div class="input_tit">密码</div>
+        <div class="input_box">
+            <input class="input_self" type="password" name="password" id="password"/>
+        </div>
+        <div class="finish_box">
+            <input class="finish_btn" value="登录" type="button" id="finish" name="finish" onclick="get()"/>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function get() {
+        var data = {
+            "username": $("#username").val(),
+            "password": $("#password").val(),
+            "type": $("#quest").val()
+        };
+        var identity = "";
+        if (data.type === '') {
+            alert("请选择身份");
+        } else if (data.username === '') {
+            alert("请输入账号");
+        } else if (data.password === '') {
+            alert("请输入密码");
+        }
+        // 如果是商家
+        if (data.type === '1') {
+            // console.log(111)
+            identity = "user";
+            data = {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+                "type": $("#quest").val()
+            };
+            console.log(data)
+            $.ajax({
+                url: "/login/loginUser",   // 地址 商家和普通用户都到用户表中，所以请求user
+                type: "post",//指定提交的类型
+                data: data,//data代表key -value类型的数据
+                // success、error代表是否返回成功
+                dataType: "text",
+                success: function (value) {
+                    alert(value)
+                    if (value == "success") {
+                        localStorage.setItem("username", data.username);
+                        localStorage.setItem("type", data.type);
+                        window.location.href = "http://localhost:8081/product/list"; // 改成自己后台设置的端口号 成功后跳到个人信息页面，暂时跳转到这里，因为商家后台还没写
+                    } else {
+                        alert("身份、账号或密码错误");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("联系管理员")
+                    // alert(typeof (errorThrown));
+                }
+            });
+            // 设置session
+            $.ajax({
+                type: "get",
+                url: "/login/selectIdUser",
+                data: data,
+                success: function (value) {
+                    alert(value)
+                    localStorage.setItem("id", value);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // alert(typeof (errorThrown));
+                }
+            });
+        }
+        // 如果是普通用户
+        if (data.type === '0') {
+            // console.log(111)
+            identity = "user";
+            data = {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+                "type": $("#quest").val()
+            };
+            alert(1)
+            $.ajax({
+                url: "/login/loginUser",   // 地址 商家和普通用户都到用户表中，所以请求user
+                type: "post",//指定提交的类型
+                data:data,//data代表key -value类型的数据
+                // success、error代表是否返回成功
+                dataType: "text",
+                success: function (value) {
+                    alert(value)
+                    if (value == "success") {
+                        localStorage.setItem("username", data.username);
+                        localStorage.setItem("type", data.type);
+                        window.location.href = "http://localhost:8083/main.html"; //就算不登陆也要能访问
+                    } else {
+                        alert("身份、账号或密码错误");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("联系管理员")
+                    // alert(typeof (errorThrown));
+                }
+            });
+            // 设置session
+            $.ajax({
+                type: "get",
+                url: "/login/selectIdUser",
+                data: data,
+                success: function (value) {
+                    alert(value)
+                    localStorage.setItem("id", value);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // alert(typeof (errorThrown));
+                }
+            });
+        }
+        // 如果是管理员
+        if (data.type === '2') {
+            // console.log(111)
+            identity = "admi";
+            data = {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+                    "type": $("#quest").val()
+            };
+            alert(1)
+            $.ajax({
+                url: "/login/loginAdmi",
+                type: "post",//指定提交的类型
+                data: data,//data代表key -value类型的数据
+                // success、error代表是否返回成功
+                dataType: "text",
+                success: function (value) {
+                    if (value == "success") {
+                        window.location.href = "http://localhost:8081/product/msg"; // 跳转到自己的个人信息页面
+                        localStorage.setItem("username", data.username);
+                        localStorage.setItem("type", data.type);
+                    } else {
+                        alert("身份、账号或密码错误");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("联系管理员")
+                    // alert(typeof (errorThrown));
+                }
+            });
+            // 设置session
+            $.ajax({
+                type: "get",
+                url: "/login/selectIdAdmi",
+                data: data,
+                success: function (value) {
+                    alert(value)
+                    localStorage.setItem("id", value);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // alert(typeof (errorThrown));
+                }
+            });
+        }
+    }
+
+    $('input[type=radio]').change(function () {
+        const m = $(this).val();//获取选中的值
+        $("#quest").val(m);//把值保存到quest控件里面
+    })
+</script>
+
+</html>
